@@ -55,7 +55,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     --serif:"Songti SC","STSong","Noto Serif SC","SimSun",Georgia,serif;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+  html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
   section{scroll-snap-align:start}
   body{margin:0;background:var(--paper);color:var(--ink);overflow-x:clip;
     font-family:var(--serif);line-height:1.7;-webkit-font-smoothing:antialiased}
@@ -227,6 +227,15 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     width:max-content;padding:0 var(--gap);will-change:transform}
   .wrow{display:flex;gap:var(--gap);height:100%;flex:none}
 
+  /* 一整条横向轨道：年份分隔 + 三排分组，全程只横向走 */
+  .board-inner.tracks{flex-direction:row;align-items:stretch}
+  .tgroup{flex:none;display:flex;flex-direction:column;gap:var(--gap);width:max-content}
+  .tsep{flex:none;align-self:stretch;width:88px;display:flex;flex-direction:column;
+    justify-content:space-between;padding:2px 10px 2px 0;border-right:1px solid rgba(27,27,24,.16)}
+  .tsep b{font-family:var(--dis);font-weight:900;font-size:30px;line-height:1;letter-spacing:-.03em;
+    color:var(--ink)}
+  .tsep i{font-style:normal;font-family:var(--sans);font-size:8px;letter-spacing:.18em;color:var(--muted)}
+
   /* 单件封装：[主块][作品][次块] —— 静态零色块 */
   .unit{position:relative;display:flex;align-items:stretch;height:100%;flex:none}
   .bpri,.bsec{flex:none;width:0;overflow:hidden;position:relative;z-index:2;
@@ -354,20 +363,19 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
   .rail:hover .knob,.rail.drag .knob{opacity:1}
   .rail.drag .knob{cursor:grabbing}
 
-  /* ============ 全屏：出血铺满，左上 logo、右上只留 X ============ */
-  .fs{position:fixed;inset:0;z-index:220;background:#0B0B0A;opacity:0;pointer-events:none;
+  /* ============ 全屏：等比缩放贴边即停，空白补纸白 ============ */
+  .fs{position:fixed;inset:0;z-index:220;background:var(--paper);opacity:0;pointer-events:none;
     transition:opacity .32s ease}
   .fs.on{opacity:1;pointer-events:auto}
-  .fs-stage{position:absolute;inset:0;overflow:hidden}
-  .fs-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
-    background:#0B0B0A}
+  .fs-stage{position:absolute;inset:0;overflow:hidden;background:var(--paper)}
+  .fs-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;
+    background:transparent}
   .fs-top{position:absolute;left:0;right:0;top:0;z-index:4;display:flex;align-items:center;
-    padding:16px 22px 40px;pointer-events:none;
-    background:linear-gradient(180deg,rgba(11,11,10,.55) 0,rgba(11,11,10,.18) 62%,rgba(11,11,10,0) 100%)}
+    padding:16px 22px 40px;pointer-events:none;background:none}
   .fs-logo{height:18px;width:auto;opacity:.95}
   .fs-info{position:absolute;left:0;bottom:0;z-index:4;padding:24px 26px 20px;max-width:66%;
-    display:flex;flex-direction:column;gap:3px;color:#fff;pointer-events:none;
-    background:linear-gradient(0deg,rgba(11,11,10,.82) 0,rgba(11,11,10,.62) 55%,rgba(11,11,10,0) 100%)}
+    display:flex;flex-direction:column;gap:3px;color:var(--ink);pointer-events:none;
+    background:none}
   .fs-info b{position:relative;font-family:var(--dis);font-weight:900;font-size:16px;letter-spacing:-.02em;
     line-height:1.2;align-self:flex-start;padding-bottom:5px}
   .fs-info span{position:relative;align-self:flex-start;padding-bottom:4px;
@@ -388,7 +396,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
   .ulplay .ulh::after{animation:ulOnce 1.15s cubic-bezier(.2,.7,.2,1) var(--d,0s) both}
   .ulplay.ulhover .ulh::after{animation:none;transform:scaleX(1);transform-origin:0 50%}
   .fs-x{position:fixed;right:20px;top:15px;z-index:230;width:32px;height:32px;display:grid;
-    place-items:center;color:#fff;filter:drop-shadow(0 2px 10px rgba(0,0,0,.55));
+    place-items:center;color:var(--ink);filter:none;
     opacity:0;pointer-events:none;transition:opacity .3s ease}
   .fs.on .fs-x{opacity:1;pointer-events:auto}
   .fs.on .fs-x.idle{opacity:0;pointer-events:none;transition:opacity .45s ease}
@@ -398,12 +406,13 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     background:currentColor;transform:rotate(45deg)}
   .fs-x i::after{transform:rotate(-45deg)}
   .fs-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;
-    padding:12px 18px;border:1px solid rgba(255,255,255,.6);background:rgba(11,11,10,.72);
-    font-family:var(--sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#fff}
-  .fs-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+    padding:12px 18px;border:1px solid rgba(27,27,24,.4);background:rgba(255,255,255,.88);
+    font-family:var(--sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
+  .fs-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:transparent}
 
   /* ============ 关于 ============ */
-  .about{background:#fff;padding:104px 24px 96px;position:relative}
+  .about{background:#fff;padding:104px 24px 96px;position:relative;height:100vh;overflow-y:auto}
+  .about>.disclaimer{margin:104px -24px -96px}
   .about-in{max-width:620px;margin:0 auto;text-align:center}
   .about .eyebrow{font-family:var(--sans);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
     color:var(--muted);margin:0 0 34px}
@@ -502,20 +511,16 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     .cover{height:100vh;grid-template-columns:1fr}
     .cover-info{display:none}
     .cover-mark{left:18px;bottom:24px;width:min(46vw,220px)}
-    /* 手机端：视差与吸附都关掉，优先保证滚动顺畅 */
-    html{scroll-snap-type:none}
+    /* 手机端：同样 5 页吸附，作品照旧三排横向走 */
     .cover-slide img{transform:none;top:0;height:100%}
     .blk[data-m="mint-wall"]{background-position:center}
-    .board{height:auto}
-    .board-stage{position:static;height:auto;padding:0 0 16px}
-    .board-inner{width:100%;padding:0 10px;transform:none!important}
-    .wrow{flex-direction:column;height:auto;width:100%;gap:7px}
-    .unit{width:100%;height:auto}
-    .wk,.unit.small .wk{width:100%;height:var(--th)}
     .bpri,.bsec{display:none}
-    .rail{display:none}
-    .web-card{width:100%;height:auto;min-height:210px}
+    .tsep{width:56px;padding-right:7px}
+    .tsep b{font-size:21px}
+    .unit.small .wk{width:min(62vw,260px)}
+    .web-card{height:100%}
     .about{padding:76px 26px 72px}
+    .about>.disclaimer{margin:76px -26px -72px}
     .about-in{max-width:100%}
     .disclaimer{padding:84px 22px 46px 30px}
     .disc-cols{grid-template-columns:1fr;gap:18px;padding-bottom:42px}
@@ -631,36 +636,36 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
 
     <div class="mail"><a class="ulh ulh-ink" href="mailto:1463481683@qq.com">1463481683@qq.com</a></div>
   </div>
+
+  <!-- ================= 06 免责（原文不动，收在关于页内） ================= -->
+  <section class="disclaimer" id="disclaimer" aria-label="免责声明">
+    <div class="disc-inner">
+      <img class="disc-mark" src="brand/img/yoya-logo-primary-light.webp" alt="YOYA">
+      <p class="disc-eyebrow">Disclaimer / 使用说明 · IP 锁定</p>
+      <h2>免责声明</h2>
+      <div class="disc-cols">
+        <p><b>01 / 素材授权</b>模板中的品牌、字体、图片与文案仅用于 YOYA 项目提案与内部协作；对外发布前，请确认素材授权、肖像权与商标使用范围。</p>
+        <p><b>02 / 占位内容</b>表单里的示例文字、邮箱、尺寸都是占位。生成简报后，请把「【未填】」替换成真实内容，再进入制作。</p>
+        <p><b>03 / 印刷色差</b>屏幕 RGB 与印刷 CMYK 存在色差；A4 出血、安全边距与专色需在印前确认，最终以打样为准。</p>
+        <p><b>04 / 专业意见</b>本模板不构成法律、财务或版权意见；涉及第三方素材时，请自行取得授权并保留凭证。</p>
+      </div>
+      <div class="disc-foot"><span>YOYA — PROJECT BRIEF / 2026</span><a href="#top">回到顶部 ↑</a></div>
+    </div>
+  </section>
 </section>
 
 </main>
-
-<!-- ================= 06 免责（原文不动） ================= -->
-<section class="disclaimer" id="disclaimer" aria-label="免责声明">
-  <div class="disc-inner">
-    <img class="disc-mark" src="brand/img/yoya-logo-primary-light.webp" alt="YOYA">
-    <p class="disc-eyebrow">Disclaimer / 使用说明 · IP 锁定</p>
-    <h2>免责声明</h2>
-    <div class="disc-cols">
-      <p><b>01 / 素材授权</b>模板中的品牌、字体、图片与文案仅用于 YOYA 项目提案与内部协作；对外发布前，请确认素材授权、肖像权与商标使用范围。</p>
-      <p><b>02 / 占位内容</b>表单里的示例文字、邮箱、尺寸都是占位。生成简报后，请把「【未填】」替换成真实内容，再进入制作。</p>
-      <p><b>03 / 印刷色差</b>屏幕 RGB 与印刷 CMYK 存在色差；A4 出血、安全边距与专色需在印前确认，最终以打样为准。</p>
-      <p><b>04 / 专业意见</b>本模板不构成法律、财务或版权意见；涉及第三方素材时，请自行取得授权并保留凭证。</p>
-    </div>
-    <div class="disc-foot"><span>YOYA — PROJECT BRIEF / 2026</span><a href="#top">回到顶部 ↑</a></div>
-  </div>
-</section>
 
 <!-- ================= 底部横向滑块（墙 / 摄影 / 网页 各一条） ================= -->
 <div class="rail" id="railWeb" aria-hidden="true">
   <div class="rail-line"><i class="rail-fill"></i><span class="knob"></span></div>
 </div>
 
-<!-- ================= 全屏：出血铺满，左上 logo、右上 X ================= -->
+<!-- ================= 全屏：等比缩放贴边即停，空白补纸白 ================= -->
 <div class="fs" id="fs" aria-hidden="true" role="dialog" aria-label="作品全屏">
   <div class="fs-stage" id="fsStage"></div>
   <div class="fs-top">
-    <img class="fs-logo" src="brand/img/yoya-logo-primary-light.webp" alt="YOYA">
+    <img class="fs-logo" src="brand/img/yoya-logo-primary.webp" alt="YOYA">
   </div>
   <div class="fs-info" id="fsInfo"></div>
   <button class="fs-x" id="fsX" type="button" aria-label="关闭"><i></i></button>
@@ -787,15 +792,50 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     trackImg(d.firstChild);
   });
 
+  /* 无感循环：末尾追加第 1 张的克隆；滑到克隆位后无过渡归零，方向始终向左 */
+  var coverPos = 0, coverClone = null;
+  if(COVER.length > 1){
+    coverClone = coverTrack.firstChild.cloneNode(true);
+    coverClone.setAttribute('aria-hidden','true');
+    coverTrack.appendChild(coverClone);
+  }
+
+  function paintCover(pos){
+    coverPos = pos;
+    coverTrack.style.transform = 'translate3d(-' + (pos * 100) + '%,0,0)';
+  }
+
   function showCover(i){
     coverIdx = i;
-    coverTrack.style.transform = 'translate3d(-' + (i * 100) + '%,0,0)';
+    var pos = i;
+    if(COVER.length > 1){
+      if(i === 0 && coverPos === COVER.length - 1){
+        pos = COVER.length;                    // 最后一张→第 1 张：继续向左进克隆位
+      }else if(coverPos >= COVER.length){
+        coverTrack.style.transition = 'none';  // 还停在克隆位（无过渡环境等）：先无感归零再走
+        paintCover(0);
+        void coverTrack.offsetWidth;
+        coverTrack.style.transition = '';
+      }
+    }
+    paintCover(pos);
     var c = COVER[i], wi = workIndexForCover(c.n || c.f), w = wi >= 0 ? WORKS[wi] : null;
     ciNum.textContent = pad2(i + 1);
     ciTotal.textContent = pad2(COVER.length);
     ciName.textContent = w ? w.t : '—';
     ciMeta.textContent = w ? (w.k + ' · ' + w.y) : '—';
   }
+
+  /* 克隆位动画结束：瞬时归零（不带过渡），下一拍从第 2 张按原方向继续 */
+  coverTrack.addEventListener('transitionend', function(e){
+    if(e.propertyName !== 'transform' || !coverClone) return;
+    if(coverPos === COVER.length){
+      coverTrack.style.transition = 'none';
+      paintCover(0);
+      void coverTrack.offsetWidth;
+      coverTrack.style.transition = '';
+    }
+  });
 
   showCover(0);
   if(COVER.length > 1){
@@ -873,7 +913,6 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
       b.knob.style.left = pct.toFixed(2) + '%';
     };
     b.measure = function(){
-      if(isMob()){ b.maxOff = 0; b.off = 0; b.render(); return; }
       b.maxOff = Math.max(0, b.inner.scrollWidth - b.stage.clientWidth);
       b.off = clamp(b.off, 0, b.maxOff);
       b.render();
@@ -902,7 +941,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     };
     b.easeToX = function(x){ b.easeTo(b.pFromX(x) * b.maxOff, 200); };
     b.rail.addEventListener('pointerdown', function(e){
-      if(isMob() || !b.maxOff) return;
+      if(!b.maxOff) return;
       b.drag = true; b.moved = false; b.downX = e.clientX;
       b.rail.classList.add('drag');
       try{ b.rail.setPointerCapture(e.pointerId); }catch(_){}
@@ -1075,59 +1114,48 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     }
   }
 
-  /* ---------- 构建：作品墙 4／4／3 ---------- */
-  function buildUnitsBoard(b, data, rows, wf){
-    var widen = wf || 1;
-    var mob = isMob(), g = gapPx(), stage = b.stage;
+  /* ---------- 构建：一整条横向轨道（年份分隔 + 每组三排），只横向走 ---------- */
+  function renderTrack(b, data, groups, wf){
+    var widen = wf || 1, stage = b.stage;
+    b.inner.className = 'board-inner tracks';
     b.inner.innerHTML = '';
-    if(mob){
-      var vw = document.documentElement.clientWidth;
-      var tw0 = vw - 20;
-      data.forEach(function(w){
+    var rowH = rowHFor(stage);
+    groups.forEach(function(grp){
+      var sep = document.createElement('div');
+      sep.className = 'tsep';
+      sep.innerHTML = '<b>' + esc(grp.label) + '</b><i>' + pad2(grp.items.length) + ' / ' + pad2(data.length) + '</i>';
+      b.inner.appendChild(sep);
+
+      var col = document.createElement('div');
+      col.className = 'tgroup';
+      var list = grp.items.map(function(i){ return data[i]; });
+      var widths = list.map(function(w){
+        return w.small ? 320 : Math.round(rowH * (w.w / w.h) * widen);
+      });
+      var idx = 0;
+      splitRows3(list.length).forEach(function(n){
         var row = document.createElement('div');
         row.className = 'wrow';
-        row.appendChild(makeUnit(b.key, w, w._gi, 0, tw0, true));
-        b.inner.appendChild(row);
+        row.style.height = rowH + 'px';
+        for(var k=0;k<n;k++){
+          row.appendChild(makeUnit(b.key, list[idx], list[idx]._gi, rowH, widths[idx], false));
+          idx++;
+        }
+        if(n) avoidSameSec(row);
+        col.appendChild(row);
       });
-      requestAnimationFrame(function(){ b.measure(); measureUls(b.inner); });
-      return;
-    }
-    var rowH = rowHFor(stage);
-    var widths = data.map(function(w){
-      return w.small ? 320 : Math.round(rowH * (w.w / w.h) * widen);
-    });
-    var idx = 0;
-    rows.forEach(function(n){
-      var row = document.createElement('div');
-      row.className = 'wrow';
-      row.style.height = rowH + 'px';
-      for(var k=0;k<n;k++){
-        row.appendChild(makeUnit(b.key, data[idx], data[idx]._gi, rowH, widths[idx], false));
-        idx++;
-      }
-      avoidSameSec(row);
-      b.inner.appendChild(row);
+      b.inner.appendChild(col);
     });
     requestAnimationFrame(function(){ b.measure(); measureUls(b.inner); });
   }
 
-  /* ---------- 构建：网页集 2＋2 ---------- */
+  /* ---------- 构建：网页集 2＋2，一页之内横向走 ---------- */
   function buildWeb(){
-    var b = boards.web, mob = isMob(), g = gapPx();
+    var b = boards.web, g = gapPx();
     b.inner.innerHTML = '';
-    if(mob){
-      WEBS.forEach(function(w,i){
-        var row = document.createElement('div');
-        row.className = 'wrow';
-        row.appendChild(makeCard(w,i,0));
-        b.inner.appendChild(row);
-      });
-      requestAnimationFrame(function(){ b.measure(); measureUls(b.inner); });
-      return;
-    }
     var contentH = b.stage.clientHeight - 18;
     var rowH = Math.floor((contentH - g) / 2);
-    var cw = Math.round(b.stage.clientWidth * 0.62);
+    var cw = Math.round(b.stage.clientWidth * (isMob() ? .82 : .62));
     for(var r=0; r<2; r++){
       var row = document.createElement('div');
       row.className = 'wrow';
@@ -1294,7 +1322,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     if(redMq && redMq.matches){ window.scrollTo(0, target); return; }
     window.scrollTo({ top: target, behavior: 'smooth' });
   }
-  function topOffset(){ return isMob() ? barH() : 0; }   // 手机端段首同样留出顶栏高的纸白带
+  function topOffset(){ return 0; }   // 5 页全部顶到视口顶，锚点落整页
 
   /* ---------- 分段：作品墙按年、摄影集按年月 ---------- */
   function bandFor(g, i){
@@ -1310,6 +1338,12 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     if(n <= 0) return [];
     var r = Math.min(3, n), base = Math.floor(n / r), rem = n % r, out = [];
     for(var k = 0; k < r; k++) out.push(base + (k < rem ? 1 : 0));
+    return out;
+  }
+  /* 轨道固定 3 排：件数不够时留空排，保证整条轨道三排等高 */
+  function splitRows3(n){
+    var out = splitRows(n);
+    while(out.length < 3) out.push(0);
     return out;
   }
 
@@ -1342,41 +1376,40 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     return {sec:sec, stage:stage, inner:inner, rail:rail};
   }
 
-  function layoutBand(b, data, idxs, wf){
-    var list = idxs.map(function(i){ return data[i]; });
-    buildUnitsBoard(b, list, splitRows(list.length), wf);
+  /* 从分组里取数据下标；年份只做横向分隔，不再拆纵向页 */
+  function trackGroups(data, keyFn){
+    return groupInto(data, keyFn).map(function(g){
+      return {key:g.key, label:g.key, items:g.items};
+    });
   }
 
   function buildBands(){
     var wallHost = document.getElementById('wallBands');
     var photoHost = document.getElementById('photoBands');
     wallHost.innerHTML = ''; photoHost.innerHTML = '';
+    BANDS.wall = []; BANDS.photo = [];
 
-    groupInto(WORKS, function(w){ return w.y || '—'; }).forEach(function(g, gi){
-      var id = gi === 0 ? 'wall' : 'wall-' + g.key;
-      var el = newBandSection(id, '作品墙 ' + g.key);
-      wallHost.appendChild(el.sec);
-      var b = makeBoard('wall', id, el.inner, el.stage, el.rail, []);
-      BANDS.wall.push({id:id, key:'wall', name:'作品墙', items:g.items, year:g.key});
-      layoutBand(b, WORKS, g.items);
-    });
+    var wallGroups = trackGroups(WORKS, function(w){ return w.y || '—'; });
+    var wallEl = newBandSection('wall', '作品墙');
+    wallHost.appendChild(wallEl.sec);
+    var wallB = makeBoard('wall', 'wall', wallEl.inner, wallEl.stage, wallEl.rail, []);
+    BANDS.wall.push({id:'wall', key:'wall', name:'作品墙',
+      items: WORKS.map(function(_, i){ return i; }), groups: wallGroups});
+    renderTrack(wallB, WORKS, wallGroups, 1);
 
-    groupInto(PHOTOS, function(p){ return (p.y || '—') + '|' + (p.m || ''); }).forEach(function(g, gi){
-      var parts = g.key.split('|');
-      var id = gi === 0 ? 'photo' : 'photo-' + parts[0] + (parts[1] ? '-' + parts[1] : '');
-      var el = newBandSection(id, '摄影集 ' + parts.join(' '));
-      photoHost.appendChild(el.sec);
-      var b = makeBoard('photo', id, el.inner, el.stage, el.rail, []);
-      BANDS.photo.push({id:id, key:'photo', name:'摄影集', items:g.items, year:parts[0]});
-      layoutBand(b, PHOTOS, g.items, 1.3);
-    });
+    var photoGroups = trackGroups(PHOTOS, function(p){ return p.y || '—'; });
+    var photoEl = newBandSection('photo', '摄影集');
+    photoHost.appendChild(photoEl.sec);
+    var photoB = makeBoard('photo', 'photo', photoEl.inner, photoEl.stage, photoEl.rail, []);
+    BANDS.photo.push({id:'photo', key:'photo', name:'摄影集',
+      items: PHOTOS.map(function(_, i){ return i; }), groups: photoGroups});
+    renderTrack(photoB, PHOTOS, photoGroups, 1.3);
 
     SECTIONS = [{id:'cover', key:'cover', name:'YOYA'}]
       .concat(BANDS.wall).concat(BANDS.photo)
       .concat([
         {id:'web',       key:'web',       name:'网页集'},
-        {id:'about',     key:'about',     name:'关于'},
-        {id:'disclaimer',key:'disclaimer',name:'免责'}
+        {id:'about',     key:'about',     name:'关于'}
       ]);
   }
 
@@ -1389,9 +1422,9 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     ink.classList.add('run');
     timers.push(setTimeout(function(){
       var band = bandFor(g, i);
-      var b = band ? boards[band.id] : null;
+      var b = band ? boards[band.id] : (boards[g] || null);
       var el = b ? b.inner.querySelector('[data-i="' + i + '"]') : null;
-      if(b && el && !isMob()){
+      if(b && el){
         b.off = clamp(el.offsetLeft - 9, 0, b.maxOff);
         b.render();
       }
@@ -1442,7 +1475,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     var el = b.inner.querySelector('[data-i="' + i + '"]');
     var secTop = document.getElementById(band.id).getBoundingClientRect().top + window.scrollY - topOffset();
     mintGo(secTop, function(){
-      if(el && !isMob()){
+      if(el){
         b.off = clamp(el.offsetLeft - 9, 0, b.maxOff);
         b.render();
       }
@@ -1539,7 +1572,7 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
     navLinks.forEach(function(a){ a.classList.toggle('on', a.dataset.key === act.key); });
     setSideGroup(act.key);   // 左侧目录跟着当前段切换，只显示对应一套
 
-    var ok = !isMob() && !sideOpen;
+    var ok = !sideOpen;
     // 每段一条滑块：只亮当前这一段
     Object.keys(boards).forEach(function(k){
       boards[k].rail.classList.toggle('on', ok && k === act.id);
@@ -1802,8 +1835,8 @@ window.YOYA_SITE_ROOT = 'https://yoyaaaaaa.github.io/yoya-portfolio';
   window.addEventListener('resize', function(){
     clearTimeout(rt);
     rt = setTimeout(function(){
-      BANDS.wall.forEach(function(bd){ layoutBand(boards[bd.id], WORKS, bd.items); });
-      BANDS.photo.forEach(function(bd){ layoutBand(boards[bd.id], PHOTOS, bd.items, 1.3); });
+      renderTrack(boards.wall, WORKS, BANDS.wall[0].groups, 1);
+      renderTrack(boards.photo, PHOTOS, BANDS.photo[0].groups, 1.3);
       buildWeb();
       measureUls();          // 重建后按新字号重新量下划线
       updateChrome();
