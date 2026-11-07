@@ -1,8 +1,12 @@
-﻿/* 封面图清单：资源统一放在站内 cover/，保证子路径部署可用 */
+﻿/* 由 sync-cover.ps1 自动生成，请勿手改。 */
+/* 顺序 = 文件名 00_ / 01_ / 02_ 前缀；没有前缀的按文件名排在后面。 */
 window.YOYA_COVER = [
-  { "f": "cover/00_20230705_GlassChick.jpg", "n": "00_20230705_GlassChick.jpg" },
-  { "f": "cover/01_20231130_OrangeStrata.jpg", "n": "01_20231130_OrangeStrata.jpg" },
-  { "f": "cover/02_20241028_GrassCar.jpg", "n": "02_20241028_GrassCar.jpg" },
-  { "f": "cover/03_20241210_NeonPoster.jpg", "n": "03_20241210_NeonPoster.jpg" },
-  { "f": "cover/04_YOYA_Wall_Mint_2400.webp", "n": "04_YOYA_Wall_Mint_2400.webp" }
+  { "f": "cover/01_20251011_03.jpg", "n": "01_20251011_03.jpg" },
+  { "f": "cover/02_YOYA_Wall_Mint_2400.jpg", "n": "02_YOYA_Wall_Mint_2400.jpg" },
+  { "f": "cover/03_20250331_01.jpg", "n": "03_20250331_01.jpg" },
+  { "f": "cover/04_20250428_01.jpg", "n": "04_20250428_01.jpg" },
+  { "f": "cover/05_20250526_01.jpg", "n": "05_20250526_01.jpg" },
+  { "f": "cover/06_20240914_Women.jpg", "n": "06_20240914_Women.jpg" },
+  { "f": "cover/07_20251113_Ch_004_001.jpg", "n": "07_20251113_Ch_004_001.jpg" },
+  { "f": "cover/08_20250818_03.jpg", "n": "08_20250818_03.jpg" }
 ];
